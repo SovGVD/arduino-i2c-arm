@@ -32,7 +32,6 @@ void settingsCheck() {
 void settingsInitEEPROM() {
   // In some cases that can be moving data from one version to another
   Serial.println("Re-init EEPROM");
-  delay(5000);
   EEPROM.write(0, EEPROM_VERSION);
   EEPROM.write(1, EEPROM_REV);
   for (int i = 2; i <= 5; i++) {

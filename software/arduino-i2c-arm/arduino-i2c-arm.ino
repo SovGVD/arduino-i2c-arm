@@ -47,13 +47,18 @@ Servo servoWristRotate;
 Servo servoGripper;
 
 // Position
-double targetPosition[5]  = {0.0, 0.0, 0.0,  0.0, 0.0};
-double currentPosition[5] = {0.0, 0.0, 0.0,  0.0, 0.0};
+double bodyPosition[3]    = {0.0, 0.0, 0.0};  // position of body servo axis from main platform 0,0,0... Actually all calculations are in 2D, so we don't need extra double value and can save space
+double targetPosition[5]  = {0.0, 0.0, 0.0,  90.0, 90.0};
+double currentPosition[5] = {0.0, 0.0, 0.0,  90.0, 90.0};
 
 double servoPositions[5] = {0.0, 0.0, 0.0, 0.0, 0.0};
 
-bool doPositionUpdate = false;
+bool doPositionUpdate = true;
 
+// Loop
+unsigned long currentTime;
+unsigned long previousTime;
+unsigned long loopTime;
 
 //CLI
 Stream *cliSerial;
@@ -71,6 +76,7 @@ void setup(void)
   cliSerial = &Serial;
 
   initSettings();
+  IK_preInitValues();
 
   #ifdef ENABLE_TOF
     tofSetup();
@@ -85,6 +91,7 @@ void setup(void)
 
 void loop(void)
 {
+  currentTime = micros();
   #ifdef ENABLE_INTERFACE_I2C
     readCommand();
   #endif
@@ -100,7 +107,10 @@ void loop(void)
 
   if (doPositionUpdate) {
     nextTransition();
-    calculateServoAngles();
-    updateCurrentPosition();
+    IK_calculateServoAngles();
+    HAL_updateCurrentPosition();
   }
+
+  loopTime = micros() - currentTime;
+//  cliSerial->println(loopTime);
 }

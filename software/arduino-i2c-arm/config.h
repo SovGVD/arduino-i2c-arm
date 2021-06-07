@@ -9,5 +9,10 @@
 #define SERVO_WRIST_ROTATE_PIN  8
 #define SERVO_GRIPPER_PIN       9
 
+#define L_SHOULDER 40.0
+#define L_ELBOW    41.2311
+#define L_WRIST    36.1      // from Wrist asix to gripper axis in top view, TODO measure it cafefully
+#define L_GRIPPER  35.0
+
 #define GRIPPER_OPEN_PWM   1700
 #define GRIPPER_CLOSE_PWM  1300

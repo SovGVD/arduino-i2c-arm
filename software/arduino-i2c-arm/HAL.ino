@@ -1,4 +1,4 @@
-void updateCurrentPosition()
+void HAL_updateCurrentPosition()
 {
   
 }
