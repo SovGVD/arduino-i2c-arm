@@ -1,3 +1,4 @@
+#include "def.h"
 #include "config.h"
 #include <EEPROM.h>
 #include <Wire.h>
@@ -45,14 +46,29 @@ Servo servoWrist;
 Servo servoWristRotate;
 Servo servoGripper;
 
+// Position
+double targetPosition[5]  = {0.0, 0.0, 0.0,  0.0, 0.0};
+double currentPosition[5] = {0.0, 0.0, 0.0,  0.0, 0.0};
+
+double servoPositions[5] = {0.0, 0.0, 0.0, 0.0, 0.0};
+
+bool doPositionUpdate = false;
+
+
 //CLI
 Stream *cliSerial;
 
 void setup(void)
 {
+  // I just hope that we can have two masters on one line
+  // The idea is to communicate with arm via i2c bus, but Arduino
+  // can handle only one hardware connection, so it will be
+  // master for ToF sensor and slave for the controller
   Wire.begin(ARM_ADDRESS);
 
   Serial.begin(115200);
+
+  cliSerial = &Serial;
 
   initSettings();
 
@@ -65,13 +81,13 @@ void setup(void)
   servoWrist.attach(SERVO_WRIST_PIN);
   servoWristRotate.attach(SERVO_WRIST_ROTATE_PIN);
   servoGripper.attach(SERVO_GRIPPER_PIN);
-
-  cliSerial = &Serial;
-  
 }
 
 void loop(void)
 {
+  #ifdef ENABLE_INTERFACE_I2C
+    readCommand();
+  #endif
   #ifdef ENABLE_TOF
     tofLoop();
   #endif
@@ -81,4 +97,10 @@ void loop(void)
       CLI_doCommand();
     }
   #endif
+
+  if (doPositionUpdate) {
+    nextTransition();
+    calculateServoAngles();
+    updateCurrentPosition();
+  }
 }

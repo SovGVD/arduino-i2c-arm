@@ -1,10 +1,11 @@
 #ifdef ENABLE_CLI
 
-#define CLI_COMMANDS 2
+#define CLI_COMMANDS 3
 
 const cliCommand cliCommands[CLI_COMMANDS] = {
-  { "help",      cliHelp     , 0},
-  { "i2cscan",   cliI2cScan  , 0}
+  { "help",      cliHelp      , 0},
+  { "reset",     cliInitEEPROM, 0},
+  { "i2cscan",   cliI2cScan   , 0}
 };
 
 bool CLI_get(char * CLI_BUFFER)

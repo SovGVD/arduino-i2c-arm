@@ -25,4 +25,9 @@ double cliI2cScan()
   cliSerial->println("DONE");
 }
 
+double cliInitEEPROM()
+{
+  settingsInitEEPROM();
+}
+
 #endif
