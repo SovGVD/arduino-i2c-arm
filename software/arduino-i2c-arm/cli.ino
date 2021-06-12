@@ -1,17 +1,17 @@
 #ifdef ENABLE_CLI
 
-#define CLI_COMMANDS 3
+#define CLI_COMMANDS 4
 
 const cliCommand cliCommands[CLI_COMMANDS] = {
-  { "help",      cliHelp      , 0},
-  { "reset",     cliInitEEPROM, 0},
-  { "i2cscan",   cliI2cScan   , 0}
+  { "help",        cliHelp      ,    0 },
+  { "reset",       cliInitEEPROM,    0 },
+  { "i2cscan",     cliI2cScan   ,    0 },
+  { "servo_calib", cliSetServoCalib, 2 },
 };
 
 bool CLI_get(char * CLI_BUFFER)
 {
   static uint8_t CLI_charsRead = 0;
-  CLI_params = 0;
   while (cliSerial->available()) {
     char CLI_c = cliSerial->read();
     switch (CLI_c) {
@@ -20,12 +20,13 @@ bool CLI_get(char * CLI_BUFFER)
         CLI_BUFFER[CLI_charsRead] = CLI_NULLCHAR;       //null terminate our command char array
         if (CLI_charsRead > 0)  {
           CLI_charsRead = 0;                           //charsRead is static, so have to reset
+          cliSerial->print("> ");
           cliSerial->println(CLI_BUFFER);
           return true;
         }
         break;
       default:
-        if (CLI_c == ' ') {
+        if (CLI_c == 32) {
           CLI_params++;
         }
         if (CLI_charsRead < CLI_BUFFER_LENGTH) {
@@ -43,7 +44,7 @@ int CLI_readInt() {
   return atoi(numTextPtr);                            //K&R string.h  pg. 251
 }
 
-float CLI_readFloat(){
+float CLI_readFloat() {
   char * floatTextPtr = strtok(NULL, CLI_delimiters);
   return atof(floatTextPtr);
 }
@@ -58,13 +59,18 @@ void CLI_doCommand() {
   for (int i = 0; i < CLI_COMMANDS; i++) {
     if (strcmp(commandName, cliCommands[i].commandName) == 0) {
       if (cliCommands[i].params != CLI_params) {
-        cliSerial->println("ERROR: incorrect params number.");
+        cliSerial->print(CLI_params);
+        cliSerial->println(" incorrect params number.");
+        CLI_params = 0;
         return;
       }
+      CLI_params = 0;
       cliCommands[i].func();
       return;
     }
   }
+  CLI_params = 0;
+  cliSerial->println("Unknown command.");
 }
 
 #endif

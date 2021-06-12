@@ -19,6 +19,10 @@ void IK_preInitValues()
 
 void IK_calculateServoAngles()
 {
+  if (!updatePosition) {
+    return;
+  }
+
   // TODO gripper size should be recalculated based ob gripper finger positions
   static double L_gripper = L_GRIPPER;
 

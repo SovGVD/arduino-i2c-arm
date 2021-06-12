@@ -1,7 +1,11 @@
-#define ARM_ADDRESS 0x09
-#define ENABLE_TOF
+//#define ENABLE_TOF
+#define ENABLE_I2C_MULTIPLEXER
 #define ENABLE_CLI
 #define ENABLE_INTERFACE_I2C
+
+#define ARM_ADDRESS 0x09
+#define TCAADDR 0x70
+#define TOFADDR 0x29
 
 #define SERVO_SHOULDER_PIN      5
 #define SERVO_ELBOW_PIN         6

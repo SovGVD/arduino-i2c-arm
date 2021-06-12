@@ -46,14 +46,20 @@ Servo servoWrist;
 Servo servoWristRotate;
 Servo servoGripper;
 
+// Settings
+bool updatePosition = false;
+
 // Position
 double bodyPosition[3]    = {0.0, 0.0, 0.0};  // position of body servo axis from main platform 0,0,0... Actually all calculations are in 2D, so we don't need extra double value and can save space
 double targetPosition[5]  = {0.0, 0.0, 0.0,  90.0, 90.0};
 double currentPosition[5] = {0.0, 0.0, 0.0,  90.0, 90.0};
 
-double servoPositions[5] = {0.0, 0.0, 0.0, 0.0, 0.0};
+double servoPositions[5]  = {90.0, 90.0, 90.0, 90.0, 90.0};
 
 bool doPositionUpdate = true;
+#ifdef ENABLE_I2C_MULTIPLEXER
+uint8_t CUR_I2C_MULTIPLEXER = 0;
+#endif
 
 // Loop
 unsigned long currentTime;
@@ -77,6 +83,11 @@ void setup(void)
 
   initSettings();
   IK_preInitValues();
+
+  #ifdef ENABLE_I2C_MULTIPLEXER
+    tcaselect(CUR_I2C_MULTIPLEXER);
+  #endif
+
 
   #ifdef ENABLE_TOF
     tofSetup();
@@ -114,3 +125,13 @@ void loop(void)
   loopTime = micros() - currentTime;
 //  cliSerial->println(loopTime);
 }
+
+#ifdef ENABLE_I2C_MULTIPLEXER
+void tcaselect(uint8_t i) {
+  if (i > 7) return;
+
+  Wire.beginTransmission(TCAADDR);
+  Wire.write(1 << i);
+  Wire.endTransmission();
+}
+#endif
