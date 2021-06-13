@@ -11,12 +11,8 @@ void HAL_updateCurrentPosition()
       servoPosition = M_PI - servoPosition;
     }
 
-    cliSerial->print(radToDeg(servoPosition));
-    cliSerial->print(",");
-
     setServoAngle(id, servoPosition);
   }
-  cliSerial->println();
 }
 
 void setServoAngle(uint8_t servoId, double angleDeg)

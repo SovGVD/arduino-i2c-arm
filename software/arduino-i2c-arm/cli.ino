@@ -1,14 +1,18 @@
 #ifdef ENABLE_CLI
 
-#define CLI_COMMANDS 6
+#define CLI_COMMANDS 10
 
 const cliCommand cliCommands[CLI_COMMANDS] = {
-  { "help",        cliHelp         , 0 },
-  { "reset",       cliInitEEPROM   , 0 },
-  { "i2cscan",     cliI2cScan      , 0 },
-  { "HAL",         cliHAL          , 1 },
-  { "servo_calib", cliSetServoCalib, 3 },
-  { "servo_angle", cliSetServoAngle, 2 },
+  { "help",         cliHelp          , 0 },
+  { "reset",        cliInitEEPROM    , 0 },
+  { "i2cscan",      cliI2cScan       , 0 },
+  { "HAL",          cliHAL           , 1 },
+  { "servo_calib",  cliSetServoCalib , 3 },
+  { "servo_angle",  cliSetServoAngle , 2 },
+  { "wrist",        cliSetWrist      , 2 },
+  { "position",     cliSetPosition   , 2 },
+  { "get_angles",   cliGetAngles     , 0 },
+  { "get_position", cliGetPosition   , 0 }
 };
 
 bool CLI_get(char * CLI_BUFFER)

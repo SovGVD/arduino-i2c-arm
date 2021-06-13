@@ -48,6 +48,7 @@ Servo servoGripper;
 
 // Settings
 bool updatePosition = true;
+bool doPositionUpdate = true;
 
 // Position
 double bodyPosition[3]    = {0.0, 0.0, 0.0};  // position of body servo axis from main platform 0,0,0... Actually all calculations are in 2D, so we don't need extra double value and can save space
@@ -55,9 +56,8 @@ double targetPosition[5]  = {0.0, 110.0, 50.0,  0.0, M_PI_2};
 double currentPosition[5] = {0.0, 110.0, 50.0,  0.0, M_PI_2};
 
 double servoPositions[5] = { M_PI_2, M_PI_2, M_PI_2, M_PI_2, M_PI_2 };
-bool servoInverted[5]    = {   true,  false,  false,  false,  false };
+bool servoInverted[5]    = {   true,   true,   true,  false,  false };
 
-bool doPositionUpdate = true;
 #ifdef ENABLE_I2C_MULTIPLEXER
 uint8_t CUR_I2C_MULTIPLEXER = 0;
 #endif
@@ -117,8 +117,8 @@ void loop(void)
     }
   #endif
 
+  nextTransition();
   if (doPositionUpdate) {
-    nextTransition();
     IK_calculateServoAngles();
     HAL_updateCurrentPosition();
   }

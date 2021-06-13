@@ -75,4 +75,50 @@ double cliHAL() {
   updatePosition = CLI_readInt() ? true : false;
 }
 
+double cliSetWrist()
+{
+  targetPosition[WRIST_ANGLE]        = degToRad(CLI_readFloat());
+  targetPosition[WRIST_ROTATE_ANGLE] = degToRad(CLI_readFloat());
+}
+
+double cliSetPosition()
+{
+  targetPosition[Y_AXIS] = CLI_readFloat();
+  targetPosition[Z_AXIS] = CLI_readFloat();
+}
+
+double cliGetAngles()
+{
+  static double servoPositionOutput = 0.0;
+
+  for (uint8_t id = 0; id < 5; id++) {
+    servoPositionOutput = servoPositions[id];
+    if (servoInverted[id]) {
+      servoPositionOutput = M_PI - servoPositionOutput;
+    }
+
+    cliSerial->print(radToDeg(servoPositionOutput));
+    cliSerial->print(",");
+  }
+  cliSerial->println();
+}
+
+double cliGetPosition()
+{
+  for (uint8_t id = 0; id < 5; id++) {
+    if (id > Z_AXIS) {
+      cliSerial->print(radToDeg(currentPosition[id]));
+      cliSerial->print("->");
+      cliSerial->print(radToDeg(targetPosition[id]));
+      cliSerial->print(",");
+    } else {
+      cliSerial->print(currentPosition[id]);
+      cliSerial->print("->");
+      cliSerial->print(targetPosition[id]);
+      cliSerial->print(",");
+    }
+  }
+  cliSerial->println();
+}
+
 #endif
