@@ -47,14 +47,15 @@ Servo servoWristRotate;
 Servo servoGripper;
 
 // Settings
-bool updatePosition = false;
+bool updatePosition = true;
 
 // Position
 double bodyPosition[3]    = {0.0, 0.0, 0.0};  // position of body servo axis from main platform 0,0,0... Actually all calculations are in 2D, so we don't need extra double value and can save space
-double targetPosition[5]  = {0.0, 0.0, 0.0,  90.0, 90.0};
-double currentPosition[5] = {0.0, 0.0, 0.0,  90.0, 90.0};
+double targetPosition[5]  = {0.0, 110.0, 50.0,  0.0, M_PI_2};
+double currentPosition[5] = {0.0, 110.0, 50.0,  0.0, M_PI_2};
 
-double servoPositions[5]  = {90.0, 90.0, 90.0, 90.0, 90.0};
+double servoPositions[5] = { M_PI_2, M_PI_2, M_PI_2, M_PI_2, M_PI_2 };
+bool servoInverted[5]    = {   true,  false,  false,  false,  false };
 
 bool doPositionUpdate = true;
 #ifdef ENABLE_I2C_MULTIPLEXER

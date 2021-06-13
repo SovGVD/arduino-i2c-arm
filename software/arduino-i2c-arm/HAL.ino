@@ -3,6 +3,20 @@ void HAL_updateCurrentPosition()
   if (!updatePosition) {
     return;
   }
+  static double servoPosition = 0.0;
+
+  for (uint8_t id = 0; id < 5; id++) {
+    servoPosition = servoPositions[id];
+    if (servoInverted[id]) {
+      servoPosition = M_PI - servoPosition;
+    }
+
+    cliSerial->print(radToDeg(servoPosition));
+    cliSerial->print(",");
+
+    setServoAngle(id, servoPosition);
+  }
+  cliSerial->println();
 }
 
 void setServoAngle(uint8_t servoId, double angleDeg)
@@ -12,8 +26,7 @@ void setServoAngle(uint8_t servoId, double angleDeg)
 
 void setServoMs(uint8_t servoId, int ms, int trimMs)
 {
-  updatePosition = false;
-
+  // TODO trim by servo
   switch(servoId){
     case ID_SERVO_SHOULDER:
       servoShoulder.writeMicroseconds(ms + trimMs);

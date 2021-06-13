@@ -1,11 +1,12 @@
 #ifdef ENABLE_CLI
 
-#define CLI_COMMANDS 5
+#define CLI_COMMANDS 6
 
 const cliCommand cliCommands[CLI_COMMANDS] = {
-  { "help",        cliHelp      ,    0 },
-  { "reset",       cliInitEEPROM,    0 },
-  { "i2cscan",     cliI2cScan   ,    0 },
+  { "help",        cliHelp         , 0 },
+  { "reset",       cliInitEEPROM   , 0 },
+  { "i2cscan",     cliI2cScan      , 0 },
+  { "HAL",         cliHAL          , 1 },
   { "servo_calib", cliSetServoCalib, 3 },
   { "servo_angle", cliSetServoAngle, 2 },
 };

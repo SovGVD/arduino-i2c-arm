@@ -5,6 +5,10 @@
 void nextTransition()
 {
   for (uint8_t i = 0; i < 5; i++) {
+    if (currentPosition[i] = targetPosition[i]) {
+      continue;
+    }
+
     if (i > Z_AXIS) {
       currentPosition[i] = currentPosition[i] < targetPosition[i] ? currentPosition[i] + TRANSITION_STEP : currentPosition[i] - TRANSITION_STEP;
     } else {

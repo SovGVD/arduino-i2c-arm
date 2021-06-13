@@ -50,6 +50,8 @@ double cliInitEEPROM()
 }
 
 double cliSetServoCalib() {
+  updatePosition = false;
+
   uint8_t servoId = CLI_readInt();
   int ms = CLI_readInt();
   int trimMs = CLI_readInt();
@@ -60,11 +62,17 @@ double cliSetServoCalib() {
 }
 
 double cliSetServoAngle() {
+  updatePosition = false;
+
   uint8_t servoId = CLI_readInt();
   double angleRad = degToRad(CLI_readFloat());
   cliSerial->println(servoId);
   cliSerial->println(radToDeg(angleRad));
   setServoAngle(servoId, angleRad);
+}
+
+double cliHAL() {
+  updatePosition = CLI_readInt() ? true : false;
 }
 
 #endif
