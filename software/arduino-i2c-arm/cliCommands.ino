@@ -52,9 +52,19 @@ double cliInitEEPROM()
 double cliSetServoCalib() {
   uint8_t servoId = CLI_readInt();
   int ms = CLI_readInt();
+  int trimMs = CLI_readInt();
   cliSerial->println(servoId);
   cliSerial->println(ms);
-  setServoMs(servoId, ms);
+  cliSerial->println(trimMs);
+  setServoMs(servoId, ms, trimMs);
+}
+
+double cliSetServoAngle() {
+  uint8_t servoId = CLI_readInt();
+  double angleRad = degToRad(CLI_readFloat());
+  cliSerial->println(servoId);
+  cliSerial->println(radToDeg(angleRad));
+  setServoAngle(servoId, angleRad);
 }
 
 #endif

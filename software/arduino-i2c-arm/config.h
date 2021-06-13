@@ -18,5 +18,22 @@
 #define L_WRIST    36.1      // from Wrist asix to gripper axis in top view, TODO measure it cafefully
 #define L_GRIPPER  35.0
 
+#define SERVO_MIN_MS 610
+#define SERVO_MAX_MS 2300
+
 #define GRIPPER_OPEN_PWM   1700
 #define GRIPPER_CLOSE_PWM  1300
+
+// find my `servo_calib` for WK-P0025
+servoProfile servoMainProfile = {
+  0,
+  180,
+  610,
+  910,
+  1210,
+  1500,
+  1790,
+  2040,
+  2300,
+  30
+};

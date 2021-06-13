@@ -5,25 +5,30 @@ void HAL_updateCurrentPosition()
   }
 }
 
-void setServoMs(uint8_t servoId, int ms)
+void setServoAngle(uint8_t servoId, double angleDeg)
+{
+  setServoMs(servoId, angleToPulse(angleDeg), 0);
+}
+
+void setServoMs(uint8_t servoId, int ms, int trimMs)
 {
   updatePosition = false;
 
   switch(servoId){
     case ID_SERVO_SHOULDER:
-      servoShoulder.writeMicroseconds(ms);
+      servoShoulder.writeMicroseconds(ms + trimMs);
       break;
     case ID_SERVO_ELBOW:
-      servoElbow.writeMicroseconds(ms);
+      servoElbow.writeMicroseconds(ms + trimMs);
       break;
     case ID_SERVO_WRIST:
-      servoWrist.writeMicroseconds(ms);
+      servoWrist.writeMicroseconds(ms + trimMs);
       break;
     case ID_SERVO_WRIST_ROTATE:
-      servoWristRotate.writeMicroseconds(ms);
+      servoWristRotate.writeMicroseconds(ms + trimMs);
       break;
     case ID_SERVO_GRIPPER:
-      servoGripper.writeMicroseconds(ms);
+      servoGripper.writeMicroseconds(ms + trimMs);
       break;
     default:
       cliSerial->print(servoId);

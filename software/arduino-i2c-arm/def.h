@@ -16,3 +16,16 @@
 #define ID_SERVO_GRIPPER      4
 
 #define SERVO_TRIM_LIMIT  0.24   // See settingsUint8ToDouble()
+
+typedef struct {
+  uint8_t minAngle;
+  uint8_t maxAngle;
+  uint16_t degMin;  // PWM pulse at minAngle deg
+  uint16_t deg30;   // PWM pulse at 30 deg
+  uint16_t deg60;
+  uint16_t deg90;   // PWM pusle at 90 deg, middle
+  uint16_t deg120;
+  uint16_t deg150;  // PWM pulse at 150 deg
+  uint16_t degMax;  // PWM pulse at maxAngle deg
+  uint8_t defTrim;
+} servoProfile;
