@@ -1,6 +1,6 @@
 #ifdef ENABLE_CLI
 
-#define CLI_COMMANDS 10
+#define CLI_COMMANDS 11
 
 const cliCommand cliCommands[CLI_COMMANDS] = {
   { "help",         cliHelp          , 0 },
@@ -12,7 +12,8 @@ const cliCommand cliCommands[CLI_COMMANDS] = {
   { "wrist",        cliSetWrist      , 2 },
   { "position",     cliSetPosition   , 2 },
   { "get_angles",   cliGetAngles     , 0 },
-  { "get_position", cliGetPosition   , 0 }
+  { "get_position", cliGetPosition   , 0 },
+  { "tof_image",    cliToFImage      , 0 }
 };
 
 bool CLI_get(char * CLI_BUFFER)

@@ -3,7 +3,7 @@ void tofSetup()
 {
   if (distanceSensor.begin() != 0) //Begin returns 0 on a good init
   {
-    Serial.println("ToFerror");
+    Serial.println("ET");
     while (1)
       ;
   }

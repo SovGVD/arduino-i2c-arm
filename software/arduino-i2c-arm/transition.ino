@@ -5,7 +5,7 @@
 void nextTransition()
 {
   doPositionUpdate = false;
-  for (uint8_t i = 0; i < 5; i++) {
+  for (uint8_t i = 0; i < 4; i++) {
     if (currentPosition[i] != targetPosition[i]) {
       if (i > Z_AXIS) {
         currentPosition[i] = currentPosition[i] < targetPosition[i] ? currentPosition[i] + TRANSITION_ANGLE_STEP : currentPosition[i] - TRANSITION_ANGLE_STEP;

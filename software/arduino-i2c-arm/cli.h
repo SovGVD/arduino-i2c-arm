@@ -15,13 +15,13 @@
 const char *CLI_delimiters = " \n"; 
 
 #ifndef CLI_BUFFER_LENGTH
-  #define CLI_BUFFER_LENGTH 128
+  #define CLI_BUFFER_LENGTH 32
 #endif
 
 char CLI_BUFFER[CLI_BUFFER_LENGTH + 1];
 uint8_t CLI_params = 0;
 
-typedef double (*cliFunction)();
+typedef void (*cliFunction)();
 
 const typedef struct cliCommand_t {
   char *commandName;

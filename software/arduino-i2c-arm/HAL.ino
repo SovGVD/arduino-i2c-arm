@@ -3,7 +3,7 @@ void HAL_updateCurrentPosition()
   if (!updatePosition) {
     return;
   }
-  static double servoPosition = 0.0;
+  double servoPosition = 0.0;
 
   for (uint8_t id = 0; id < 5; id++) {
     servoPosition = servoPositions[id];
@@ -22,25 +22,22 @@ void setServoAngle(uint8_t servoId, double angleDeg)
 
 void setServoMs(uint8_t servoId, int ms, int trimMs)
 {
-  // TODO trim by servo
+  int thisMs = ms + trimMs;
   switch(servoId){
     case ID_SERVO_SHOULDER:
-      servoShoulder.writeMicroseconds(ms + trimMs);
+      servoShoulder.writeMicroseconds(thisMs);
       break;
     case ID_SERVO_ELBOW:
-      servoElbow.writeMicroseconds(ms + trimMs);
+      servoElbow.writeMicroseconds(thisMs);
       break;
     case ID_SERVO_WRIST:
-      servoWrist.writeMicroseconds(ms + trimMs);
+      servoWrist.writeMicroseconds(thisMs);
       break;
     case ID_SERVO_WRIST_ROTATE:
-      servoWristRotate.writeMicroseconds(ms + trimMs);
+      servoWristRotate.writeMicroseconds(thisMs);
       break;
     case ID_SERVO_GRIPPER:
-      servoGripper.writeMicroseconds(ms + trimMs);
+      servoGripper.writeMicroseconds(thisMs);
       break;
-    default:
-      cliSerial->print(servoId);
-      cliSerial->println(" unknown servo ID");
   }
 }

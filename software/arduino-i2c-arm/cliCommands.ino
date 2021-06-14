@@ -1,6 +1,6 @@
 #ifdef ENABLE_CLI
 
-double cliHelp()
+void cliHelp()
 {
   for (int i = 0; i < CLI_COMMANDS; i++) {
     cliSerial->print(cliCommands[i].commandName);
@@ -9,13 +9,13 @@ double cliHelp()
   }
 }
 
-double cliI2cScan()
+void cliI2cScan()
 {
   #ifdef ENABLE_I2C_MULTIPLEXER
     cliSerial->print(CUR_I2C_MULTIPLEXER);
-    cliSerial->print(" ch ");
+    cliSerial->print("ch ");
   #endif
-  cliSerial->println("i2c: ");
+  cliSerial->println("i2c:");
   for (byte i = 1; i < 127; i++) {
     Wire.beginTransmission (i);        // Begin I2C transmission Address (i)
     if (Wire.endTransmission () == 0)  // Receive 0 = success (ACK response) 
@@ -39,17 +39,17 @@ double cliI2cScan()
     cliSerial->println("DONE");
   } else {
     tcaselect(CUR_I2C_MULTIPLEXER);
-    cliSerial->println("");
+    cliSerial->println();
     cliI2cScan();
   }
 }
 
-double cliInitEEPROM()
+void cliInitEEPROM()
 {
   settingsInitEEPROM();
 }
 
-double cliSetServoCalib() {
+void cliSetServoCalib() {
   updatePosition = false;
 
   uint8_t servoId = CLI_readInt();
@@ -61,7 +61,7 @@ double cliSetServoCalib() {
   setServoMs(servoId, ms, trimMs);
 }
 
-double cliSetServoAngle() {
+void cliSetServoAngle() {
   updatePosition = false;
 
   uint8_t servoId = CLI_readInt();
@@ -71,27 +71,27 @@ double cliSetServoAngle() {
   setServoAngle(servoId, angleRad);
 }
 
-double cliHAL() {
+void cliHAL() {
   updatePosition = CLI_readInt() ? true : false;
 }
 
-double cliSetWrist()
+void cliSetWrist()
 {
   targetPosition[WRIST_ANGLE]        = degToRad(CLI_readFloat());
   targetPosition[WRIST_ROTATE_ANGLE] = degToRad(CLI_readFloat());
 }
 
-double cliSetPosition()
+void cliSetPosition()
 {
   targetPosition[Y_AXIS] = CLI_readFloat();
   targetPosition[Z_AXIS] = CLI_readFloat();
 }
 
-double cliGetAngles()
+void cliGetAngles()
 {
-  static double servoPositionOutput = 0.0;
+  double servoPositionOutput = 0.0;
 
-  for (uint8_t id = 0; id < 5; id++) {
+  for (uint8_t id = 0; id < 4; id++) {
     servoPositionOutput = servoPositions[id];
     if (servoInverted[id]) {
       servoPositionOutput = M_PI - servoPositionOutput;
@@ -103,9 +103,9 @@ double cliGetAngles()
   cliSerial->println();
 }
 
-double cliGetPosition()
+void cliGetPosition()
 {
-  for (uint8_t id = 0; id < 5; id++) {
+  for (uint8_t id = 0; id < 4; id++) {
     if (id > Z_AXIS) {
       cliSerial->print(radToDeg(currentPosition[id]));
       cliSerial->print("->");
@@ -119,6 +119,13 @@ double cliGetPosition()
     }
   }
   cliSerial->println();
+}
+
+void cliToFImage()
+{
+  #ifdef ENABLE_TOF
+  tofPrint();
+  #endif
 }
 
 #endif

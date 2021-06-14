@@ -2,12 +2,11 @@
 #define RADTODEG 180/PI
 #define DEGTORAD PI/180
 
-#define X_AXIS 0
-#define Y_AXIS 1
-#define Z_AXIS 2
+#define Y_AXIS 0
+#define Z_AXIS 1
 
-#define WRIST_ANGLE        3
-#define WRIST_ROTATE_ANGLE 4
+#define WRIST_ANGLE        2
+#define WRIST_ROTATE_ANGLE 3
 
 #define ID_SERVO_SHOULDER     0
 #define ID_SERVO_ELBOW        1
