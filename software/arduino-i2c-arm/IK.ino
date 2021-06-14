@@ -8,7 +8,7 @@ void IK_preInitValues()
   L_ELBOW_sq    = sq(L_ELBOW);
 }
 
-void IK_calculateServoAngles()
+bool IK_calculateServoAngles()
 {
   if (!updatePosition) {
     return;
@@ -25,9 +25,25 @@ void IK_calculateServoAngles()
   double h = sq(arm_Z_delta) + sq(IK_armPosition[Y_AXIS] - bodyPosition[Y_AXIS]);
   double sqrth = sqrt(h);
 
-  servoPositions[ID_SERVO_ELBOW] = acos((L_SHOULDER_sq + L_ELBOW_sq - h) / (2 * L_SHOULDER * L_ELBOW));
+  double elbowValue    = acos((L_SHOULDER_sq + L_ELBOW_sq - h) / (2 * L_SHOULDER * L_ELBOW));
+  double shoulderValue = M_PI - asin(arm_Z_delta/sqrth) - acos((L_SHOULDER_sq - L_ELBOW_sq + h)/(2 * L_SHOULDER * sqrth));
+  double wristValue    = M_PI - acos(arm_Z_delta/sqrth) - acos((L_ELBOW_sq - L_SHOULDER_sq + h)/(2 * L_ELBOW    * sqrth)) - currentPosition[WRIST_ANGLE];
 
-  servoPositions[ID_SERVO_SHOULDER] = M_PI - asin(arm_Z_delta/sqrth) - acos((L_SHOULDER_sq - L_ELBOW_sq + h)/(2 * L_SHOULDER * sqrth));
+  if (isIKValueSafe(elbowValue) && isIKValueSafe(shoulderValue) && isIKValueSafe(wristValue)) {
+    servoPositions[ID_SERVO_ELBOW]=elbowValue;
+    servoPositions[ID_SERVO_SHOULDER]=shoulderValue;
+    servoPositions[ID_SERVO_WRIST]=wristValue;
+    return true;
+  }
 
-  servoPositions[ID_SERVO_WRIST] = M_PI - acos(arm_Z_delta/sqrth) - acos((L_ELBOW_sq - L_SHOULDER_sq + h)/(2*L_ELBOW*sqrth));
+  return false;
+}
+
+bool isIKValueSafe(double value)
+{
+  if (isnan(value)) return false;
+  if (value < 0) return false;
+  if (value > 180) return false;
+
+  return true;
 }

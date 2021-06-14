@@ -52,8 +52,8 @@ bool doPositionUpdate = true;
 
 // Position
 double bodyPosition[3]    = {0.0, 0.0};  // position of body servo axis from main platform 0,0... All calculations are in 2D
-double targetPosition[5]  = {110.0, 50.0,  0.0, M_PI_2};
-double currentPosition[5] = {110.0, 50.0,  0.0, M_PI_2};
+double targetPosition[5]  = {75.0, 10.0,  0.0, M_PI_2};
+double currentPosition[5] = {74.0,  9.0,  0.0, M_PI_2}; // this should be not the same as targetPosition
 
 double servoPositions[5] = { M_PI_2, M_PI_2, M_PI_2, M_PI_2, M_PI_2 };
 bool servoInverted[5]    = {   true,   true,   true,  false,  false };
@@ -119,8 +119,9 @@ void loop(void)
 
   nextTransition();
   if (doPositionUpdate) {
-    IK_calculateServoAngles();
-    HAL_updateCurrentPosition();
+    if (IK_calculateServoAngles()) {
+      HAL_updateCurrentPosition();
+    }
   }
 
   loopTime = micros() - currentTime;

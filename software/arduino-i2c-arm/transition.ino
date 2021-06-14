@@ -1,5 +1,5 @@
 #define TRANSITION_STEP 0.1
-#define TRANSITION_ANGLE_STEP 0.01 // RAD
+#define TRANSITION_ANGLE_STEP 0.001 // RAD
 
 // TODO: that should be better, TRANSITION_STEP can be too slow, time should be use
 void nextTransition()

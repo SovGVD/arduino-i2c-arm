@@ -1,4 +1,4 @@
-#define ENABLE_TOF
+//#define ENABLE_TOF
 #define ENABLE_I2C_MULTIPLEXER
 #define ENABLE_CLI
 #define ENABLE_INTERFACE_I2C
