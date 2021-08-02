@@ -4,8 +4,7 @@ void tofSetup()
   if (distanceSensor.begin() != 0) //Begin returns 0 on a good init
   {
     Serial.println("ET");
-    while (1)
-      ;
+    return;
   }
 
   // Short mode max distance is limited to 1.3 m but has a better ambient immunity.
@@ -14,18 +13,24 @@ void tofSetup()
   //distanceSensor.setDistanceModeLong(); // default
 
   /*
-     * The minimum timing budget is 20 ms for the short distance mode and 33 ms for the medium and long distance modes.
-     * Predefined values = 15, 20, 33, 50, 100(default), 200, 500.
-     */
+   * The minimum timing budget is 20 ms for the short distance mode and 33 ms for the medium and long distance modes.
+   * Predefined values = 15, 20, 33, 50, 100(default), 200, 500.
+   */
   distanceSensor.setTimingBudgetInMs(20);
 
   // measure periodically. Intermeasurement period must be >/= timing budget.
   distanceSensor.setIntermeasurementPeriod(25);
   distanceSensor.startRanging(); // Start once
+
+  tofReady = true;
 }
 
 void tofLoop()
 {
+  if (!tofReady) {
+    return;
+  }
+
   // TODO this delays are not ideal...
   distanceSensor.setROI(4,4, roiID);
   delay(1);

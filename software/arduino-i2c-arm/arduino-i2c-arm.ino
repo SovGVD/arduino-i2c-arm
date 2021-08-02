@@ -14,7 +14,10 @@
   SFEVL53L1X distanceSensor;
 
   uint16_t image[256];
+  uint16_t tofVMin = 65536;
+  uint16_t tofVMax = 0;
   byte     roiID = 0;
+  bool     tofReady = false;
 
   /**Table of Optical Centers**
     *
@@ -59,7 +62,7 @@ double servoPositions[5] = { M_PI_2, M_PI_2, M_PI_2, M_PI_2, M_PI_2 };
 bool servoInverted[5]    = {   true,   true,   true,  false,  false };
 
 #ifdef ENABLE_I2C_MULTIPLEXER
-uint8_t CUR_I2C_MULTIPLEXER = 0;
+uint8_t CUR_I2C_MULTIPLEXER = 1;
 #endif
 
 // Loop
